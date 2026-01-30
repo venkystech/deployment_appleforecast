@@ -83,8 +83,11 @@ if st.button("Forecast Next 30 Days"):
         next_row[target_index] = pred
         current_seq = np.vstack([current_seq[1:], next_row])
 
-    dummy = np.zeros((FORECAST_DAYS, len(cols)))
+    # ✅ REAL FIX: Use last scaled row baseline instead of zeros
+    baseline = scaled_data[-1].copy()
+    dummy = np.tile(baseline, (FORECAST_DAYS, 1))
     dummy[:, target_index] = future_scaled_preds
+
     future_prices = scaler.inverse_transform(dummy)[:, target_index]
 
     future_index = pd.date_range(
