@@ -49,8 +49,10 @@ df = load_data()
 model, scaler, meta = load_assets()
 
 cols = meta["columns"]
-target_index = meta["target_index"]
 WINDOW = meta["window"]
+
+# ✅ FIX: force correct target column index (avoid wrong scaling)
+target_index = cols.index("stock_price")
 
 ts = df["stock_price"]
 
@@ -97,6 +99,7 @@ if st.button("Forecast Next 30 Days"):
     })
 
     st.subheader("Forecast Table")
+    st.data routinely ?
     st.dataframe(forecast_df, use_container_width=True)
 
     st.download_button(
